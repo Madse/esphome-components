@@ -30,6 +30,7 @@ namespace
         di.setDefaultFields("name,id,status,total_energy_consumption_kwh,total_volume_m3,timestamp");
         di.setMeterType(MeterType::HeatMeter);
         di.addLinkMode(LinkMode::T1);
+        di.addLinkMode(LinkMode::C1);
         di.addDetection(MANUFACTURER_MAD, 0x04, 0x00);
         di.setConstructor([](MeterInfo& mi, DriverInfo& di){ return shared_ptr<Meter>(new Driver(mi, di)); });
     });
