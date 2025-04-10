@@ -62,7 +62,7 @@ namespace
             });
 
         addNumericFieldWithExtractor(
-            "total",
+            "total_kwh",
             "The total heat energy consumption recorded by this meter.",
             DEFAULT_PRINT_PROPERTIES,
             Quantity::Energy,
