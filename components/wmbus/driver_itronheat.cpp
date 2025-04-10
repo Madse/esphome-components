@@ -37,7 +37,7 @@ namespace
 
     Driver::Driver(MeterInfo &mi, DriverInfo &di) : MeterCommonImplementation(mi, di)
     {
-        addOptionalLibraryFields("meter_datetime");
+
 
         addStringFieldWithExtractorAndLookup(
             "status",
@@ -74,6 +74,8 @@ namespace
         );
 
         addOptionalLibraryFields("total_m3");
+        addOptionalLibraryFields("meter_datetime");
+
 //        addNumericFieldWithExtractor(
 //            "total",
 //            "The total volume of heating media recorded by this meter.",
