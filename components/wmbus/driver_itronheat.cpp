@@ -37,6 +37,8 @@ namespace
 
     Driver::Driver(MeterInfo &mi, DriverInfo &di) : MeterCommonImplementation(mi, di)
     {
+        addOptionalLibraryFields("meter_datetime");
+
         addStringFieldWithExtractorAndLookup(
             "status",
             "Meter status from tpl field.",
@@ -64,40 +66,46 @@ namespace
             "The total heat energy consumption recorded by this meter.",
             DEFAULT_PRINT_PROPERTIES,
             Quantity::Energy,
-            VifScaling::Auto, DifSignedness::Signed,
+            VifScaling::Auto,
+            DifSignedness::Signed,
             FieldMatcher::build()
             .set(MeasurementType::Instantaneous)
             .set(VIFRange::AnyEnergyVIF)
         );
 
+        addOptionalLibraryFields("total_m3");
+//        addNumericFieldWithExtractor(
+//            "total",
+//            "The total volume of heating media recorded by this meter.",
+//            DEFAULT_PRINT_PROPERTIES,
+//            Quantity::Volume,
+//            VifScaling::Auto, DifSignedness::Signed,
+//            FieldMatcher::build()
+//            .set(MeasurementType::Instantaneous)
+//            .set(VIFRange::Volume)
+//        );
+
+//        addStringFieldWithExtractor(
+//            "last_year",
+//            "Last day of previous billing year.",
+//            DEFAULT_PRINT_PROPERTIES,
+//            FieldMatcher::build()
+//            .set(MeasurementType::Instantaneous)
+//            .set(VIFRange::Date)
+//            .set(StorageNr(1))
+//        );
         addNumericFieldWithExtractor(
-            "total",
-            "The total volume of heating media recorded by this meter.",
-            DEFAULT_PRINT_PROPERTIES,
-            Quantity::Volume,
-            VifScaling::Auto, DifSignedness::Signed,
-            FieldMatcher::build()
-            .set(MeasurementType::Instantaneous)
-            .set(VIFRange::Volume)
-        );
-
-        addStringFieldWithExtractor(
-            "meter_timestamp",
-            "Date time for this reading.",
-            DEFAULT_PRINT_PROPERTIES,
-            FieldMatcher::build()
-            .set(MeasurementType::Instantaneous)
-            .set(VIFRange::DateTime)
-        );
-
-        addStringFieldWithExtractor(
             "last_year",
             "Last day of previous billing year.",
             DEFAULT_PRINT_PROPERTIES,
+            Quantity::PointInTime,
+            VifScaling::Auto,
+            DifSignedness::Signed,
             FieldMatcher::build()
             .set(MeasurementType::Instantaneous)
             .set(VIFRange::Date)
-            .set(StorageNr(1))
+            .set(StorageNr(1)),
+            Unit::DateLT
         );
 
         addNumericFieldWithExtractor(
@@ -114,14 +122,14 @@ namespace
     }
 }
 
-// Test: Heat sensostar 20480057 NOKEY
-// Comment:
-// telegram=|68B3B36808007257004820c51400046c100000047839803801040600000000041300000000042B00000000142B00000000043B00000000143B00000000025B1400025f15000261daff02235c00046d2c2ddc24440600000000441300000000426c000001fd171003fd0c05000084200600000000c420060000000084300600000000c430060000000084401300000000c44013000000008480401300000000c48040130000000084c0401300000000c4c0401300000000a216|
-// {"media":"heat","meter":"sensostar","name":"Heat","id":"20480057","meter_timestamp":"2022-04-28 13:44","total_kwh":0,"power_kw":0,"power_max_kw":0,"flow_water_m3h":0,"flow_water_max_m3h":0,"forward_c":20,"return_c":21,"difference_c":-0.38,"total_water_m3":0,"current_status":"ERROR_FLOW_MEASUREMENT_SYSTEM_ERROR","reporting_date":"2000-00-00","energy_consumption_at_reporting_date_kwh":0,"consumption_1_months_ago_kwh":0,"timestamp":"1111-11-11T11:11:11Z"}
-// |Heat;20480057;0;0;ERROR_FLOW_MEASUREMENT_SYSTEM_ERROR;2000-00-00;0;1111-11-11 11:11.11
+// Test: Heat itronheat 23340485 NOKEY
+// Comment: Allmess UltraMaXX with ITRON EquaScan hMIU RF Module
+// telegram=|444497268504342300047AD00030A52F2F_04062C0100000C1429270000066D2D130AE12B007406FEFEFEFE426C1F010D7FEB0E00000006040C995500372F2F0C7951622223|
+// {"_":"telegram","id": "23340485","last_year_date": "2000-01-31","media": "heat","meter": "itronheat","meter_datetime": "2023-11-01 10:19:45","name": "Heat","status": "OK","timestamp": "1111-11-11T11:11:11Z","total_kwh": 300,"total_m3": 27.29}
+// |Heat;23340485;OK;300;1111-11-11 11:11.11
 
-// Test: WMZ sensostar 02752560 NOKEY
-// Comment: from "Sensostar U"
-//telegram=a444c5146025750200047ac20000202f2f046d2e26c62a040643160000041310f0050001fd1700426cbf2c4406570e00008401061f160000840206f6150000840306f5150000840406f3150000840506ea150000840606bf1500008407065214000084080692120000840906c5100000840a06570e0000840b06ca0b0000840c06da090000840d06ca080000840e06c8080000840f06c608000003fd0c05010002fd0b2111
-//{"media":"heat","meter":"sensostar","name":"WMZ","id":"02752560","meter_timestamp":"2022-10-06 06:46","total_kwh":5699,"total_water_m3":389.136,"current_status":"OK","reporting_date":"2021-12-31","energy_consumption_at_reporting_date_kwh":3671,"consumption_1_months_ago_kwh":5663,"consumption_2_months_ago_kwh":5622,"consumption_3_months_ago_kwh":5621,"consumption_4_months_ago_kwh":5619,"consumption_5_months_ago_kwh":5610,"consumption_6_months_ago_kwh":5567,"consumption_7_months_ago_kwh":5202,"consumption_8_months_ago_kwh":4754,"consumption_9_months_ago_kwh":4293,"consumption_10_months_ago_kwh":3671,"consumption_11_months_ago_kwh":3018,"consumption_12_months_ago_kwh":2522,"consumption_13_months_ago_kwh":2250,"consumption_14_months_ago_kwh":2248,"consumption_15_months_ago_kwh":2246,"timestamp":"1111-11-11 11:11.11"}
-//WMZ;02752560;5699;389.136000;OK;1111-11-11 11:11.11
+// Test: Heat_lower_case itronheat 11755757 NOKEY
+// Comment: Itron Heatmeter with strange MFCT iTW instead of ITW
+//telegram=404497A65757751100047A040000A00406494C0000041348318000066D2B0ED7EE2A0044069A360000426CDF2C0D7FEB0700000006040C5C7E034E0C7942502321
+//{"_":"telegram","id": "11755757","last_year_date": "2022-12-31","last_year_kwh": 13978,"media": "heat","meter": "itronheat","meter_datetime": "2023-10-14 23:14:43","name": "Heat_lower_case","status": "OK","timestamp": "1111-11-11T11:11:11Z","total_kwh": 19529,"total_m3": 8401.224}
+//Heat_lower_case;11755757;OK;19529;1111-11-11 11:11.11
