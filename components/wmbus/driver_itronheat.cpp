@@ -94,12 +94,11 @@ namespace
             "last_year",
             "Last day of previous billing year.",
             DEFAULT_PRINT_PROPERTIES,
-            Quantity::PointInTime,
             FieldMatcher::build()
             .set(MeasurementType::Instantaneous)
             .set(VIFRange::Date)
             .set(StorageNr(1))
-            );
+        );
 
         addNumericFieldWithExtractor(
             "last_year",
@@ -112,45 +111,6 @@ namespace
             .set(VIFRange::AnyEnergyVIF)
             .set(StorageNr(1))
         );
-
-//        addStringFieldWithExtractor(
-//            "reporting_date",
-//                "The reporting date of the last billing period.",
-//            DEFAULT_PRINT_PROPERTIES,
-//            FieldMatcher::build()
-//            .set(MeasurementType::Instantaneous)
-//            .set(VIFRange::Date)
-//            .set(StorageNr(1))
-//            );
-//
-//        addNumericFieldWithExtractor(
-//            "energy_consumption_at_reporting_date",
-//            "The energy consumption at the last billing period date.",
-//            DEFAULT_PRINT_PROPERTIES,
-//            Quantity::Energy,
-//            VifScaling::Auto, DifSignedness::Signed,
-//            FieldMatcher::build()
-//            .set(MeasurementType::Instantaneous)
-//            .set(VIFRange::AnyEnergyVIF)
-//            .set(StorageNr(1))
-//            );
-//
-//        for (int i=1; i<=15; ++i)
-//        {
-//            string name, info;
-//            strprintf(&name, "consumption_%d_months_ago", i);
-//            strprintf(&info, "Energy consumption %d month(s) ago.", i);
-//            addNumericFieldWithExtractor(
-//                name,
-//                info,
-//                DEFAULT_PRINT_PROPERTIES,
-//                Quantity::Energy,
-//            VifScaling::Auto, DifSignedness::Signed,
-//                FieldMatcher::build()
-//                .set(MeasurementType::Instantaneous)
-//                .set(VIFRange::AnyEnergyVIF)
-//                .set(StorageNr(i)));
-//        }
     }
 }
 
