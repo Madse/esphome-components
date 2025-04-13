@@ -76,26 +76,19 @@ namespace
         addOptionalLibraryFields("total_m3");
         addOptionalLibraryFields("meter_datetime");
 
-//        addNumericFieldWithExtractor(
-//            "total",
-//            "The total volume of heating media recorded by this meter.",
-//            DEFAULT_PRINT_PROPERTIES,
-//            Quantity::Volume,
-//            VifScaling::Auto, DifSignedness::Signed,
-//            FieldMatcher::build()
-//            .set(MeasurementType::Instantaneous)
-//            .set(VIFRange::Volume)
-//        );
+        addNumericFieldWithExtractor(
+            "last_year",
+            "The total heat energy for the previous year period.",
+            DEFAULT_PRINT_PROPERTIES,
+            Quantity::Energy,
+            VifScaling::Auto,
+            DifSignedness::Signed,
+            FieldMatcher::build()
+            .set(MeasurementType::Instantaneous)
+            .set(VIFRange::AnyEnergyVIF)
+            .set(StorageNr(1))
+        );
 
-//        addStringFieldWithExtractor(
-//            "last_year",
-//            "Last day of previous billing year.",
-//            DEFAULT_PRINT_PROPERTIES,
-//            FieldMatcher::build()
-//            .set(MeasurementType::Instantaneous)
-//            .set(VIFRange::Date)
-//            .set(StorageNr(1))
-//        );
         addNumericFieldWithExtractor(
             "last_year",
             "Last day of previous billing year.",
@@ -108,18 +101,6 @@ namespace
             .set(VIFRange::Date)
             .set(StorageNr(1)),
             Unit::DateLT
-        );
-
-        addNumericFieldWithExtractor(
-            "last_year",
-            "The total heat energy for the previous year period.",
-            DEFAULT_PRINT_PROPERTIES,
-            Quantity::Energy,
-            VifScaling::Auto, DifSignedness::Signed,
-            FieldMatcher::build()
-            .set(MeasurementType::Instantaneous)
-            .set(VIFRange::AnyEnergyVIF)
-            .set(StorageNr(1))
         );
     }
 }
